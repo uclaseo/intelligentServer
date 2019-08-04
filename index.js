@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { initializeMongo } = require('./connections/mongoConnection');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,5 +14,12 @@ app.post('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
+  initializeMongo()
+    .then(() => {
+      console.log('MongoDB connected');
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error: ', error);
+    });
   console.log(`App is listening on port ${PORT}`);
 });
